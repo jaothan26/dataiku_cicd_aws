@@ -4,9 +4,11 @@ import radon.visitors as cc_visitors
 
 
 def test_scenario(params):
-    dataiku.set_remote_dss(params["host"], params["api"])
-    client = dataiku.api_client()
-    project = client.get_project(params["project"])
+    client = dataikuapi.DSSClient(host, apiKey)
+    project = client.get_project(project)
+
+test_project.export_bundle(bundle_id)
+test_project.download_exported_bundle_archive_to_file(bundle_id, bundle_id + ".zip")
 
     # Check that there is at least one scenario TEST_XXXXX & one TEST_SMOKE
     scenarios = project.list_scenarios()
@@ -22,9 +24,11 @@ def test_scenario(params):
 
     
 def test_coding_recipes_complexity(params):
-    dataiku.set_remote_dss(params["host"], params["api"])
-    client = dataiku.api_client()
-    project = client.get_project(params["project"])
+    client = dataikuapi.DSSClient(host, apiKey)
+    test_project = client.get_project(project)
+
+test_project.export_bundle(bundle_id)
+test_project.download_exported_bundle_archive_to_file(bundle_id, bundle_id + ".zip")
 
     recipes = project.list_recipes()
     for recipe in recipes:
