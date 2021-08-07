@@ -1,11 +1,10 @@
-import dataiku
+import dataikuapi
 import radon.raw as cc_raw
 import radon.visitors as cc_visitors
 
 
 def test_scenario(params):
-    dataiku.set_remote_dss(params["host"], params["api"])
-    client = dataiku.api_client()
+    client = dataikuapi.DSSClient(params["host"], params["api"])
     project = client.get_project(params["project"])
 
     # Check that there is at least one scenario TEST_XXXXX & one TEST_SMOKE
@@ -22,15 +21,14 @@ def test_scenario(params):
 
     
 def test_coding_recipes_complexity(params):
-    dataiku.set_remote_dss(params["host"], params["api"])
-    client = dataiku.api_client()
+    client = dataikuapi.DSSClient(params["host"], params["api"])
     project = client.get_project(params["project"])
 
     recipes = project.list_recipes()
     for recipe in recipes:
         if recipe["type"] == "python":
             print(recipe)
-            payload = project.get_recipe(recipe["name"]).get_definition_and_payload().get_payload()
+            payload = project.get_recipe(recipe["name"]).get_settings().get_code()
             code_analysis = cc_raw.analyze(payload)
             print(code_analysis)
             assert code_analysis.loc < 100
