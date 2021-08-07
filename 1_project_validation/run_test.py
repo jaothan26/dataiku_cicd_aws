@@ -1,4 +1,4 @@
-import dataiku
+import dataikuapi
 import radon.raw as cc_raw
 import radon.visitors as cc_visitors
 
